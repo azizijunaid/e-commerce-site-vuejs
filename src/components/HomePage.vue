@@ -1,22 +1,22 @@
 <template>
   <a-layout id="components-layout-demo-top-side">
     <a-layout-header class="header">
-      <div class="logo" />
+      <div class="myLogo" />
       <a-menu
         theme="dark"
         mode="horizontal"
-        :default-selected-keys="['2']"
+        :default-selected-keys="['1']"
         :style="{ lineHeight: '64px' }"
       >
         <a-menu-item key="1">
           <router-link to="/products">Products</router-link>
         </a-menu-item>
         <a-menu-item key="2">
-          <router-link to="/about">nav 2</router-link>
+          <router-link to="/carts">My Cart</router-link>
         </a-menu-item>
-        <a-menu-item key="3">
+        <!-- <a-menu-item key="3">
           nav 3
-        </a-menu-item>
+        </a-menu-item> -->
       </a-menu>
     </a-layout-header>
     <a-layout-content style="padding: 0 50px">
@@ -26,7 +26,8 @@
         <a-breadcrumb-item>App</a-breadcrumb-item>
       </a-breadcrumb> -->
       <a-layout style="padding: 24px 0; background: #fff">
-        <a-layout-sider width="200" style="background: #fff">
+        <a-layout-sider width="200" style="background: #fff"
+        v-if="currentRouteName !=='productDetails'" >
           <a-menu
             mode="inline"
             :default-selected-keys="['1']"
@@ -38,6 +39,7 @@
               <a-menu-item
                 :key="category"
                 v-for="category in categories"
+                @click="filterCategories(category)"
               >
                 {{ category.toUpperCase() }}
               </a-menu-item>
@@ -67,16 +69,30 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   data() {
     return {
-      categories: null,
+      // categories: null,
     };
   },
   async created() {
     // eslint-disable-next-line no-undef
-    const res = await axios.get('https://fakestoreapi.com/products/categories');
-    this.categories = res.data;
+    // const res = await axios.get('https://fakestoreapi.com/products/categories');
+    // this.categories = res.data;
+    this.$store.dispatch('getCategories');
+  },
+  computed: {
+    currentRouteName() {
+      return this.$route.name;
+    },
+    ...mapState(['categories']),
+  },
+  methods: {
+    filterCategories(category) {
+      this.$store.dispatch('filterProducts', category);
+    },
   },
 };
 </script>
@@ -88,5 +104,9 @@ export default {
   background: rgba(255, 255, 255, 0.2);
   margin: 16px 28px 16px 0;
   float: left;
+}
+
+.myLogo{
+  background-image: url('https://upload.wikimedia.org/wikipedia/commons/2/26/Daraz_logo_color.png');
 }
 </style>
