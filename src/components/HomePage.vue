@@ -27,7 +27,7 @@
       </a-breadcrumb> -->
       <a-layout style="padding: 24px 0; background: #fff">
         <a-layout-sider width="200" style="background: #fff"
-        v-if="currentRouteName !=='productDetails'" >
+        v-if="currentRouteName !=='productDetails' && currentRouteName !== 'Cart'" >
           <a-menu
             mode="inline"
             :default-selected-keys="['1']"
@@ -42,16 +42,6 @@
                 @click="filterCategories(category)"
               >
                 {{ category.toUpperCase() }}
-              </a-menu-item>
-              <!-- <a-menu-item key="2">
-                option2
-              </a-menu-item>
-              <a-menu-item key="3">
-                option3
-              </a-menu-item>
-              <a-menu-item key="4">
-                option4
-              </a-menu-item> -->
             </a-sub-menu>
           </a-menu>
         </a-layout-sider>
